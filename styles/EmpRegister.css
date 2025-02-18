@@ -1,0 +1,180 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Outer Container */
+.emp-reg-outer-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Header Section */
+.emp-reg-header-div {
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.emp-reg-header-inner-div {
+    display: flex;
+    align-items: center;
+
+}
+
+.emp-reg-header-icon {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.emp-reg-header-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.emp-reg-header-text {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#emp {
+    color: #3cba54;
+}
+
+#pay {
+    color: #000;
+}
+
+/* Form Container */
+.emp-reg-body-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    margin-top: 20px;
+}
+
+.emp-reg-form-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form Fields */
+.emp-reg-form-field {
+    margin-bottom: 15px;
+}
+
+.emp-reg-form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.emp-reg-form-field input,
+.emp-reg-form-field select,
+.emp-reg-form-field textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Profile Image & Gender */
+.emp-reg-form-checkbox {
+    margin-bottom: 15px;
+}
+
+.emp-reg-form-checkbox label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.answer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.answer label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.answer img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+
+/* Department Selection */
+.emp-reg-form-checkbox .answer {
+    flex-wrap: wrap;
+}
+
+.answer input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Dropdown Styling */
+.date-drop-down {
+    display: flex;
+    gap: 10px;
+}
+
+.date-drop-down select {
+    flex: 1;
+}
+
+/* Form Buttons */
+.emp-reg-form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#cancel-btn {
+    background-color: #ccc;
+    color: #000;
+}
+
+#submit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+#reset-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Button Hover Effects */
+.button:hover {
+    opacity: 0.8;
+}
