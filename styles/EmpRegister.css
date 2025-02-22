@@ -1,12 +1,11 @@
-* {
+*{
     margin: 0;
-    padding: 0;
+    padding:0;
     box-sizing: border-box;
     font-family: sans-serif;
 }
 
-body,
-html {
+body,html{
     width: 100%;
     height: 100%;
 }
@@ -25,7 +24,7 @@ html {
     /* border: red 2px solid; */
     background-color: white;
     position: relative;
-
+    
 }
 
 
@@ -40,14 +39,14 @@ html {
     position: relative;
     margin-top: 1.5rem;
     margin-left: 10%;
-}
+}   
 
 .emp-reg-logo-div img {
     width: 2.5rem;
     height: 2.5rem;
 }
 
-.emp-reg-title {
+.emp-reg-title{
     text-decoration: none;
 }
 
@@ -67,7 +66,7 @@ html {
     padding: 2rem;
 }
 
-.emp-reg-form {
+.emp-reg-form{
     width: 100%;
     max-width: 800px;
     margin: auto;
@@ -109,8 +108,8 @@ html {
 }
 
 .emp-reg-form h2 {
-    text-align: left;
-    font: normal normal bold 28px/37px Roboto;
+    text-align: center;
+    font: normal normal bold 48px/47px Roboto;
     letter-spacing: 0px;
     color: #42515F;
     text-transform: capitalize;
@@ -145,7 +144,7 @@ html {
     width: 1.15rem;
 }
 
-.emp-reg-form-radio-gender-option {
+.emp-reg-form-radio-gender-option{
     display: flex;
     margin-right: -.4rem;
 }
@@ -179,7 +178,7 @@ html {
 }
 
 .emp-reg-form-checkbox-department label input {
-    background: #FFFFFF;
+    background: #FFFFFF ;
     /* 0% 0% no-repeat padding-box; */
     border: 1px solid #BDBDBD;
     border-radius: 1px;
@@ -263,12 +262,12 @@ html {
     border-radius: 3px;
     cursor: pointer;
     background: #E2E2E2;
-    /* 0% 0% no-repeat padding-box; */
+     /* 0% 0% no-repeat padding-box; */
     border: 1px solid #969696;
     border-radius: 5px;
 }
 
-.emp-reg-form-button button:hover {
+.emp-reg-form-button button:hover{
     background-color: #707070;
     color: white;
 }
@@ -279,7 +278,7 @@ html {
     gap: 1rem;
 }
 
-.emp-reg-form-button-submit #submit-button:hover {
+.emp-reg-form-button-submit #submit-button:hover{
     background-color: #82A70C;
     color: white;
 }
@@ -293,7 +292,7 @@ html {
 .emp-form-notes {
     display: flex;
     justify-content: space-between;
-    /* gap: 1rem; */
+     /* gap: 1rem; */
 }
 
 .emp-reg-form-name label,
