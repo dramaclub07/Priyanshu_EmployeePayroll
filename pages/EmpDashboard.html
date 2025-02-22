@@ -1,1 +1,45 @@
-                           
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll</title>
+    <link rel="stylesheet" href="../styles/empDashboard.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer src="../js/empDashboard.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <img src="../assets/icon.jpg" alt="Employee Payroll Logo">
+        <h2><span class="highlight">EMPLOYEE</span> PAYROLL</h2>
+        <button onclick="window.location.href='empRegister.html'">Add User</button>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search Employee...">
+        <button id="searchButton">🔍</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Profile</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Start Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="employeeTableBody">
+            <!-- Employee data will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+</body>
+
+</html>

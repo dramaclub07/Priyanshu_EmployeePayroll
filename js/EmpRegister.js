@@ -1,145 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const form = document.getElementById('employeeForm');
-    const nameInput = document.getElementById('name');
-    const genderInputs = document.querySelectorAll('input[name="profile-gender"]');
-    const profileImageInputs = document.querySelectorAll('input[name="profile-image"]');
-    const departmentInputs = document.querySelectorAll('input[name="department"]');
-    const salaryInput = document.getElementById('salary');
-    const notesInput = document.getElementById('notes');
-    const dayInput = document.getElementById('day');
-    const monthInput = document.getElementById('month');
-    const yearInput = document.getElementById('year');
-    const outputDiv = document.getElementById('output');
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("registerForm");
+    const errorMsg = document.createElement("p");
 
-    // Form Submission Event Listener
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent page reload
+    // Error message styling
+    errorMsg.style.color = "red";
+    errorMsg.style.fontWeight = "bold";
+    errorMsg.style.display = "none";
+    form.prepend(errorMsg);
 
-        // Capture Form Data
-        const name = nameInput.value.trim();
-        const gender = getSelectedGender();
-        const profile = getSelectedProfileImage();
-        const departments = getSelectedDepartments();
-        const salary = parseSalary(salaryInput.value);
-        const notes = notesInput.value.trim();
-        const date = getSelectedDate();
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevents page reload
 
-        // Validations
-        if (!validateName(name) || !validateGender(gender) || !validateDepartments(departments) ||
-            !validateSalary(salary) || !validateNotes(notes) || !validateDate(date)) {
-            return;
-        }
-
-        // Create Employee Data Object
-        const EmployeeData = {
-            name: name,
-            gender: gender,
-            profile: profile,
-            departments: departments,
-            salary: salary,
-            notes: notes,
-            date: date,
+        // Capture form values
+        let employeeData = {
+            name: document.getElementById("name").value.trim(),
+            profileImage: document.querySelector("input[name='profile']:checked")?.value || "",
+            gender: document.querySelector("input[name='gender']:checked")?.value || "",
+            department: Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+                .map(input => input.value),
+            salary: document.querySelector("select").value,
+            startDate: `${document.querySelector(".date-select select:nth-child(1)").value} / 
+                        ${document.querySelector(".date-select select:nth-child(2)").value} / 
+                        ${document.querySelector(".date-select select:nth-child(3)").value}`,
+            notes: document.querySelector("textarea").value.trim()
         };
 
-        // Save to Local Storage
-        let empList = [];
-        if (localStorage.getItem('empList')) {
-            empList = JSON.parse(localStorage.getItem('empList'));
+        // Validation: Check if all required fields are filled
+        if (!employeeData.name || !employeeData.profileImage || !employeeData.gender || 
+            employeeData.department.length === 0 || employeeData.salary === "Select Salary" || 
+            employeeData.startDate.includes("Day") || employeeData.startDate.includes("Month") || 
+            employeeData.startDate.includes("Year")) {
+
+            errorMsg.textContent = "⚠ Please fill out all required fields before submitting.";
+            errorMsg.style.display = "block";
+            return;
+        } else {
+            errorMsg.style.display = "none"; 
         }
-        empList.push(EmployeeData);
-        localStorage.setItem('empList', JSON.stringify(empList));
 
-        // Display Data in Console
-        console.log(EmployeeData);
+        // Retrieve existing employees from localStorage
+        let employees = JSON.parse(localStorage.getItem("employees")) || [];
 
-        // Display Data on Page
-        displayEmployeeData(EmployeeData);
+        // Check if it's an edit or new entry
+        let editIndex = localStorage.getItem("editEmployeeIndex");
+        if (editIndex !== null) {
+            employees[editIndex] = employeeData; // Update the existing record
+            localStorage.removeItem("editEmployeeIndex"); // Remove edit index after update
+        } else {
+            employees.push(employeeData); // Add new employee
+        }
 
-        // Reset Form
+        // Save updated employees list
+        localStorage.setItem("employees", JSON.stringify(employees));
         form.reset();
+
+        // Redirect to dashboard.html after successful submission
+        alert("Employee added successfully!");
+        window.location.href = "http://127.0.0.1:5500/EmployeePayroll/pages/EmpDashboard.html";
     });
-
-    // Helper: Get Selected Gender
-    function getSelectedGender() {
-        return [...genderInputs].find(input => input.checked)?.value || '';
-    }
-
-    // Helper: Get Selected Profile Image
-    function getSelectedProfileImage() {
-        return [...profileImageInputs].find(input => input.checked)?.value || '';
-    }
-
-    // Helper: Get Selected Departments (Array)
-    function getSelectedDepartments() {
-        return [...departmentInputs].filter(input => input.checked).map(input => input.value);
-    }
-
-    // Helper: Parse Salary (Remove ₹ and commas)
-    function parseSalary(salary) {
-        return parseFloat(salary.replace(/[₹,]/g, '')) || 0;
-    }
-
-    // Helper: Get Formatted Date (YYYY-MM-DD)
-    function getSelectedDate() {
-        const day = dayInput.value.padStart(2, '0');
-        const month = monthInput.value.padStart(2, '0');
-        const year = yearInput.value;
-        return `${year}-${month}-${day}`;
-    }
-
-    // Validation: Name (Required, Min Length 2)
-    function validateName(name) {
-        if (!name || name.length < 2) {
-            alert('❌ Please enter a valid name (min. 2 characters).');
-            return false;
-        }
-        return true;
-    }
-
-    // Validation: Gender (Required)
-    function validateGender(gender) {
-        if (!gender) {
-            alert('❌ Please select your gender.');
-            return false;
-        }
-        return true;
-    }
-
-    // Validation: Departments (At least 1 Required)
-    function validateDepartments(departments) {
-        if (departments.length === 0) {
-            alert('❌ Please select at least one department.');
-            return false;
-        }
-        return true;
-    }
-
-    // Validation: Salary (Required, Positive Number)
-    function validateSalary(salary) {
-        if (!salary || isNaN(salary) || salary <= 0) {
-            alert('❌ Please enter a valid positive salary.');
-            return false;
-        }
-        return true;
-    }
-
-    // Validation: Notes (Required, Min Length 5)
-    function validateNotes(notes) {
-        if (!notes || notes.length < 5) {
-            alert('❌ Notes must be at least 5 characters long.');
-            return false;
-        }
-        return true;
-    }
-
-    // Validation: Date (Required and Valid Format)
-    function validateDate(date) {
-        if (!date || date === 'undefined-undefined-undefined') {
-            alert('❌ Please select a valid date of joining.');
-            return false;
-        }
-        return true;
-    }
-
 });
