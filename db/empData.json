@@ -1,0 +1,54 @@
+{
+  "employees": [
+    {
+      "name": "Priyanshu",
+      "profileImage": "user4",
+      "gender": "Male",
+      "department": [
+        "HR",
+        "Sales",
+        "Finance"
+      ],
+      "salary": "₹1,00,000",
+      "startDate": "15 / \n                        Nov / \n                        2023",
+      "notes": "Hii",
+      "id": "4d2c"
+    },
+    {
+      "name": "Rakshit",
+      "profileImage": "user3",
+      "gender": "Male",
+      "department": [
+        "Sales"
+      ],
+      "salary": "₹40,000",
+      "startDate": "16 / \n                        Nov / \n                        2023",
+      "notes": "jj",
+      "id": "2a4e"
+    },
+    {
+      "id": "3a18",
+      "name": "sadfasd",
+      "profileImage": "user3",
+      "gender": "Female",
+      "department": [
+        "Sales"
+      ],
+      "salary": "₹80,000",
+      "startDate": "18 / \n                        Sept / \n                        2025",
+      "notes": "sadfmasdlfjask"
+    },
+    {
+      "id": "7278",
+      "name": "user 2",
+      "profileImage": "user1",
+      "gender": "Male",
+      "department": [
+        "Sales"
+      ],
+      "salary": "₹30,000",
+      "startDate": "11 / \n                        Sept / \n                        2023",
+      "notes": "user 2"
+    }
+  ]
+}

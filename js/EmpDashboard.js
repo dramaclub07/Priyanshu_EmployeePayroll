@@ -1,12 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
     const employeeTableBody = document.getElementById("employeeTableBody");
-    let employees = JSON.parse(localStorage.getItem("employees")) || [];
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
 
-    function displayEmployees(filteredEmployees = employees) {
+    // Fetch and display employees
+    async function fetchEmployees() {
+        try {
+            const response = await fetch('http://localhost:3000/employees');
+            const employees = await response.json();
+            displayEmployees(employees);
+            return employees;
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    }
+
+    function displayEmployees(employees) {
         employeeTableBody.innerHTML = "";
-        filteredEmployees.forEach((employee, index) => {
+        employees.forEach((employee) => {
             employeeTableBody.innerHTML += `
-                <tr id="employee-${index}">
+                <tr id="employee-${employee.id}">
                     <td><img src="../assets/${employee.profileImage}.jpg" alt="Profile"></td>
                     <td>${employee.name}</td>
                     <td>${employee.gender}</td>
@@ -14,62 +27,87 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${employee.salary}</td>
                     <td>${employee.startDate}</td>
                     <td>
-                        <button class="edit" data-index="${index}">✏️</button>
-                        <button class="delete" data-index="${index}">🗑️</button>
+                        <button class="edit" data-id="${employee.id}">✏️</button>
+                        <button class="delete" data-id="${employee.id}">🗑️</button>
                     </td>
                 </tr>
             `;
         });
     }
 
-    displayEmployees();
+    // Initial load
+    fetchEmployees();
 
-    // ✅ Delete Employee with Confirmation
-    employeeTableBody.addEventListener("click", function (event) {
+    // Delete Employee
+    employeeTableBody.addEventListener("click", async function (event) {
         if (event.target.classList.contains("delete")) {
-            let index = event.target.getAttribute("data-index");
-
-            let confirmDelete = confirm("Are you sure you want to delete this employee?");
-            if (confirmDelete) {
-                employees.splice(index, 1);
-                localStorage.setItem("employees", JSON.stringify(employees));
-                displayEmployees();
-                alert("Employee deleted successfully!");
+            const id = event.target.getAttribute("data-id");
+            if (confirm("Are you sure you want to delete this employee?")) {
+                try {
+                    await fetch(`http://localhost:3000/employees/${id}`, {
+                        method: 'DELETE'
+                    });
+                    alert("Employee deleted successfully!");
+                    fetchEmployees(); // Refresh the list
+                } catch (error) {
+                    console.error('Error deleting employee:', error);
+                    alert("Failed to delete employee");
+                }
             }
         }
     });
 
-    // ✅ Edit Employee
+    // Edit Employee
     employeeTableBody.addEventListener("click", function (event) {
         if (event.target.classList.contains("edit")) {
-            let index = event.target.getAttribute("data-index");
-            localStorage.setItem("editEmployeeIndex", index);
+            const id = event.target.getAttribute("data-id");
+            localStorage.setItem("editEmployeeId", id); // Still using localStorage for temporary state
             window.location.href = "empRegister.html";
         }
     });
 
-    // ✅ Search on Button Click
-    document.getElementById("searchButton").addEventListener("click", function () {
-        let searchText = document.getElementById("searchInput").value.trim().toLowerCase();
+    // Live Search
+    searchInput.addEventListener("input", async function () {
+        const searchText = searchInput.value.trim().toLowerCase();
+        const employees = await fetchEmployees();
+        const filteredEmployees = employees.filter(emp =>
+            emp.name.toLowerCase().includes(searchText)
+        );
+        displayEmployees(filteredEmployees);
+    });
 
-        if (searchText === "") {
+    // Search on Button Click (Highlight Found Employee)
+    searchButton.addEventListener("click", async function () {
+        const searchText = searchInput.value.trim().toLowerCase();
+        if (!searchText) {
             alert("Please enter an employee name to search!");
             return;
         }
 
-        let foundEmployee = employees.find((emp) => emp.name.toLowerCase() === searchText);
+        try {
+            const employees = await fetchEmployees();
+            const foundEmployee = employees.find(emp =>
+                emp.name.toLowerCase().includes(searchText)
+            );
 
-        if (foundEmployee) {
-            let index = employees.indexOf(foundEmployee);
-            alert(`Employee "${foundEmployee.name}" is present!`);
+            if (foundEmployee) {
+                alert(`Employee "${foundEmployee.name}" is present!`);
+                const employeeRow = document.getElementById(`employee-${foundEmployee.id}`);
+                if (employeeRow) {
+                    employeeRow.style.backgroundColor = "#ffff99"; // Highlight the row
+                    employeeRow.scrollIntoView({ behavior: "smooth", block: "center" });
 
-            // Scroll to employee row smoothly
-            let employeeRow = document.getElementById(`employee-${index}`);
-            if (employeeRow) {
-                employeeRow.scrollIntoView({ behavior: "smooth", block: "center" });
+                    // Remove highlight after 3 seconds
+                    setTimeout(() => {
+                        employeeRow.style.backgroundColor = "";
+                    }, 3000);
+                }
+            } else {
+                alert(`Employee "${searchText}" is NOT present!`);
             }
-        } else {
-            alert(`Employee "${searchText}" is NOT present!`);
+        } catch (error) {
+            console.error('Error searching employees:', error);
+            alert("Search failed");
         }
     });
 });
